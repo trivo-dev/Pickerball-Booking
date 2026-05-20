@@ -1,0 +1,44 @@
+.header {
+  height: 64px;
+  padding: 0 40px;
+  background: #0f766e;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .logo {
+    font-size: 22px;
+    font-weight: 700;
+  }
+
+  nav {
+    display: flex;
+    gap: 20px;
+
+    a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+.main-content {
+  min-height: calc(100vh - 120px);
+  padding: 32px 40px;
+  background: #f8fafc;
+}
+
+.footer {
+  height: 56px;
+  background: #0f172a;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

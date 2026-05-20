@@ -1,0 +1,108 @@
+.page-header {
+  margin-bottom: 24px;
+
+  h2 {
+    font-size: 32px;
+    margin: 0 0 8px;
+    color: #0f172a;
+  }
+
+  p {
+    color: #64748b;
+    margin: 0;
+  }
+}
+
+.court-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 26px;
+}
+
+.court-card {
+  background: white;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.08);
+  display: flex;
+  flex-direction: column;
+
+  img {
+    width: 100%;
+    height: 190px;
+    object-fit: cover;
+  }
+}
+
+.court-content {
+  padding: 20px;
+}
+
+.court-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+
+  h3 {
+    margin: 0;
+    color: #0f172a;
+  }
+}
+
+.location {
+  color: #64748b;
+  margin: 10px 0;
+}
+
+.description {
+  color: #475569;
+  line-height: 1.5;
+  min-height: 48px;
+}
+
+.price {
+  color: #0f766e;
+  font-weight: 800;
+  font-size: 18px;
+}
+
+.status {
+  white-space: nowrap;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #dcfce7;
+  color: #166534;
+  font-size: 13px;
+  font-weight: 700;
+
+  &.maintenance {
+    background: #fee2e2;
+    color: #991b1b;
+  }
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 18px;
+
+  .btn {
+    flex: 1;
+    text-align: center;
+    padding: 10px 14px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 700;
+  }
+
+  .detail {
+    background: #e2e8f0;
+    color: #0f172a;
+  }
+
+  .book {
+    background: #0f766e;
+    color: white;
+  }
+}

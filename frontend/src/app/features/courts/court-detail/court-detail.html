@@ -1,1 +1,60 @@
-<p>court-detail works!</p>
+<div class="court-detail" *ngIf="court() as court">
+
+  <div class="image-wrapper">
+    <img
+      [src]="court.imageUrl"
+      [alt]="court.name"
+    >
+  </div>
+
+  <div class="content">
+
+    <div class="header">
+
+      <h1>{{ court.name }}</h1>
+
+      <span
+        class="status"
+        [class.available]="court.status === 'AVAILABLE'"
+        [class.maintenance]="court.status === 'MAINTENANCE'"
+      >
+        {{
+          court.status === 'AVAILABLE'
+            ? 'Đang hoạt động'
+            : 'Bảo trì'
+        }}
+      </span>
+
+    </div>
+
+    <p class="location">
+      📍 {{ court.location }}
+    </p>
+
+    <p class="price">
+      {{ court.pricePerHour | currency:'VND':'symbol':'1.0-0' }}
+      / giờ
+    </p>
+
+    <div class="description">
+      <h3>Mô tả sân</h3>
+
+      <p>
+        {{ court.description }}
+      </p>
+    </div>
+
+    <button
+      class="book-btn"
+      [disabled]="court.status === 'MAINTENANCE'"
+    >
+      Đặt sân ngay
+    </button>
+
+  </div>
+
+</div>
+
+<div *ngIf="!court()" class="not-found">
+  Đang tải dữ liệu...
+</div>

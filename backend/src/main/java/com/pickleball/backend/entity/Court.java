@@ -17,15 +17,18 @@ public class Court {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(columnDefinition = "NVARCHAR(255)")
     private String name;
 
+    @Column(columnDefinition = "NVARCHAR(255)")
     private String location;
 
     private Double pricePerHour;
 
+    @Column(columnDefinition = "NVARCHAR(500)")
     private String imageUrl;
 
-    @Column(length = 1000)
+    @Column(columnDefinition = "NVARCHAR(1000)")
     private String description;
 
     @Enumerated(EnumType.STRING)

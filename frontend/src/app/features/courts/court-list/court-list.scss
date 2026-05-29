@@ -30,13 +30,31 @@
     margin: 10px 0;
   }
 
-  a {
-    display: inline-block;
+  .actions {
+    display: flex;
+    gap: 12px;
     margin-top: 10px;
+  }
+
+  .detail-btn,
+  .book-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-decoration: none;
-    color: white;
-    background: #1d4ed8;
     padding: 10px 14px;
     border-radius: 8px;
+    font-weight: 600;
+  }
+
+  .detail-btn {
+    background: #1d4ed8;
+    color: white;
+  }
+
+  .book-btn {
+    background: #0a8f3d;
+    color: white;
   }
 }

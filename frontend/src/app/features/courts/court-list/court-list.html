@@ -1,23 +1,18 @@
 <div class="court-list">
-
   <div class="court-card" *ngFor="let court of courts()">
-
-    <img [src]="court.imageUrl" [alt]="court.name">
+    <img [src]="court.imageUrl" [alt]="court.name" />
 
     <div class="content">
       <h2>{{ court.name }}</h2>
 
       <p>{{ court.location }}</p>
 
-      <p class="price">
-        {{ court.pricePerHour | currency:'VND':'symbol':'1.0-0' }}/ giờ
-      </p>
+      <p class="price">{{ court.pricePerHour | currency: 'VND' : 'symbol' : '1.0-0' }}/ giờ</p>
 
-      <a [routerLink]="['/courts', court.id]">
-        Xem chi tiết
-      </a>
+      <div class="actions">
+        <a [routerLink]="['/courts', court.id]" class="detail-btn"> Xem chi tiết </a>
+        <a [routerLink]="['/booking', court.id]" class="book-btn"> Đặt sân ngay </a>
+      </div>
     </div>
-
   </div>
-
 </div>

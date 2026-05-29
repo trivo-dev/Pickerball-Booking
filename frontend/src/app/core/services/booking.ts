@@ -1,50 +1,30 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
 import { Booking } from '../models/booking.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BookingService {
-  private bookings: Booking[] = [
-    {
-      id: 1,
-      courtId: 1,
-      courtName: 'Sân Pickleball Quận 1',
-      customerName: 'Nguyễn Văn A',
-      phone: '0909123456',
-      bookingDate: '2026-05-20',
-      startTime: '18:00',
-      endTime: '19:00',
-      totalPrice: 120000,
-      status: 'CONFIRMED'
-    }
-  ];
+  private http = inject(HttpClient);
+  private apiUrl = 'http://localhost:8080/api/bookings';
 
-  getBookings(): Booking[] {
-    return this.bookings;
+  getBookings(userId?: number): Observable<Booking[]> {
+    const url = userId ? `${this.apiUrl}?userId=${userId}` : this.apiUrl;
+    return this.http.get<Booking[]>(url);
   }
 
-  addBooking(booking: Booking): void {
-    this.bookings.push({
-      ...booking,
-      id: this.bookings.length + 1,
-      status: 'PENDING'
-    });
+  addBooking(booking: Omit<Booking, 'id' | 'status'> & { userId?: number }): Observable<Booking> {
+    return this.http.post<Booking>(this.apiUrl, booking);
   }
 
-  cancelBooking(id: number): void {
-    const booking = this.bookings.find(item => item.id === id);
-
-    if (booking) {
-      booking.status = 'CANCELLED';
-    }
+  cancelBooking(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
-  confirmBooking(id: number): void {
-    const booking = this.bookings.find(item => item.id === id);
-
-    if (booking) {
-      booking.status = 'CONFIRMED';
-    }
+  confirmBooking(id: number): Observable<Booking> {
+    return this.http.put<Booking>(`${this.apiUrl}/${id}/confirm`, {});
   }
 }

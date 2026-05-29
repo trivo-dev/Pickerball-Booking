@@ -28,6 +28,12 @@ public class Booking {
 
     private Double totalPrice;
 
+    @Column(columnDefinition = "NVARCHAR(255)")
+    private String customerName;
+
+    @Column(columnDefinition = "NVARCHAR(50)")
+    private String phone;
+
     @Enumerated(EnumType.STRING)
     private BookingStatus status;
 

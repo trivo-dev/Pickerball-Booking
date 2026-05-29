@@ -1,1 +1,61 @@
-<p>booking-form works!</p>
+<div class="booking-page" *ngIf="court() as court; else loading">
+  <div class="booking-header">
+    <a [routerLink]="['/courts', court.id]" class="back-link">← Quay lại sân</a>
+    <h1>Đặt sân: {{ court.name }}</h1>
+  </div>
+
+  <div class="booking-card">
+    <div class="court-summary">
+      <img [src]="court.imageUrl" [alt]="court.name" />
+      <div>
+        <h2>{{ court.name }}</h2>
+        <p>Địa điểm: {{ court.location }}</p>
+        <p>Giá: {{ court.pricePerHour | currency: 'VND' : 'symbol' : '1.0-0' }} / giờ</p>
+      </div>
+    </div>
+
+    <form (ngSubmit)="submitBooking()" class="booking-form">
+      <label>
+        Tên người đặt
+        <input type="text" name="customerName" [(ngModel)]="customerName" required />
+      </label>
+
+      <label>
+        Số điện thoại
+        <input type="tel" name="phone" [(ngModel)]="phone" required />
+      </label>
+
+      <label>
+        Ngày đặt
+        <input type="date" name="bookingDate" [(ngModel)]="bookingDate" required />
+      </label>
+
+      <div class="time-group">
+        <label>
+          Bắt đầu
+          <input type="time" name="startTime" [(ngModel)]="startTime" required />
+        </label>
+
+        <label>
+          Kết thúc
+          <input type="time" name="endTime" [(ngModel)]="endTime" required />
+        </label>
+      </div>
+
+      <div class="summary-box">
+        <p>Tổng thời gian: {{ getDurationMinutes(startTime, endTime) / 60 }} giờ</p>
+        <p class="total-price">
+          Tổng tiền: {{ totalPrice | currency: 'VND' : 'symbol' : '1.0-0' }}
+        </p>
+      </div>
+
+      <button type="submit" [disabled]="!canSubmit">Đặt sân ngay</button>
+    </form>
+
+    <div class="message" *ngIf="message">{{ message }}</div>
+  </div>
+</div>
+
+<ng-template #loading>
+  <p class="loading">Đang tải thông tin sân...</p>
+</ng-template>

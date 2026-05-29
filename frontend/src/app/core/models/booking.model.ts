@@ -9,4 +9,5 @@ export interface Booking {
   endTime: string;
   totalPrice: number;
   status: 'PENDING' | 'CONFIRMED' | 'CANCELLED';
+  userId?: number;
 }

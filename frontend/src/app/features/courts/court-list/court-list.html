@@ -1,49 +1,23 @@
-<section class="page-header">
-  <div>
-    <h2>Danh sách sân Pickleball</h2>
-    <p>Chọn sân phù hợp và tiến hành đặt lịch chơi.</p>
-  </div>
-</section>
+<div class="court-list">
 
-<div class="court-grid">
-  @for (court of courts; track court.id) {
-    <div class="court-card">
-      <img [src]="court.imageUrl" [alt]="court.name">
+  <div class="court-card" *ngFor="let court of courts()">
 
-      <div class="court-content">
-        <div class="court-top">
-          <h3>{{ court.name }}</h3>
+    <img [src]="court.imageUrl" [alt]="court.name">
 
-          <span
-            class="status"
-            [class.maintenance]="court.status === 'MAINTENANCE'"
-          >
-            {{ court.status === 'AVAILABLE' ? 'Đang hoạt động' : 'Bảo trì' }}
-          </span>
-        </div>
+    <div class="content">
+      <h2>{{ court.name }}</h2>
 
-        <p class="location">{{ court.location }}</p>
+      <p>{{ court.location }}</p>
 
-        <p class="description">
-          {{ court.description }}
-        </p>
+      <p class="price">
+        {{ court.pricePerHour | currency:'VND':'symbol':'1.0-0' }}/ giờ
+      </p>
 
-        <p class="price">
-          {{ court.pricePerHour | currency:'VND':'symbol':'1.0-0' }} / giờ
-        </p>
-
-        <div class="actions">
-          <a [routerLink]="['/courts', court.id]" class="btn detail">
-            Chi tiết
-          </a>
-
-          @if (court.status === 'AVAILABLE') {
-            <a [routerLink]="['/booking', court.id]" class="btn book">
-              Đặt sân
-            </a>
-          }
-        </div>
-      </div>
+      <a [routerLink]="['/courts', court.id]">
+        Xem chi tiết
+      </a>
     </div>
-  }
+
+  </div>
+
 </div>

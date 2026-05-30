@@ -1,0 +1,71 @@
+<section class="user-management">
+  <div class="page-header">
+    <h1>Quản lý người dùng</h1>
+    <p>Admin có thể xem danh sách người dùng, đổi quyền và xóa tài khoản.</p>
+  </div>
+
+  <p *ngIf="isLoading()">
+    Đang tải danh sách người dùng...
+  </p>
+
+  <p class="success" *ngIf="successMessage()">
+    {{ successMessage() }}
+  </p>
+
+  <p class="error" *ngIf="errorMessage()">
+    {{ errorMessage() }}
+  </p>
+
+  <div class="table-card">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Họ tên</th>
+          <th>Email</th>
+          <th>Số điện thoại</th>
+          <th>Vai trò</th>
+          <th>Đổi quyền</th>
+          <th>Thao tác</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let user of users()">
+          <td>{{ user.id }}</td>
+          <td>{{ user.fullName }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.phone }}</td>
+
+          <td>
+            <span class="role" [class.admin]="user.role === 'ADMIN'">
+              {{ user.role }}
+            </span>
+          </td>
+
+          <td>
+            <select
+              [ngModel]="user.role"
+              (ngModelChange)="changeRole(user, $event)"
+            >
+              <option value="USER">USER</option>
+              <option value="ADMIN">ADMIN</option>
+            </select>
+          </td>
+
+          <td>
+            <button type="button" class="delete-btn" (click)="deleteUser(user)">
+              Xóa
+            </button>
+          </td>
+        </tr>
+
+        <tr *ngIf="!isLoading() && users().length === 0">
+          <td colspan="7" class="empty">
+            Chưa có người dùng nào
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>

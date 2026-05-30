@@ -1,0 +1,33 @@
+<div class="admin-layout">
+
+  <aside class="admin-sidebar">
+    <h2>Admin</h2>
+
+    <nav>
+      <a routerLink="/admin/dashboard">
+        Tổng quan
+      </a>
+
+      <a routerLink="/admin/courts">
+        Quản lý sân
+      </a>
+
+      <a routerLink="/admin/bookings">
+        Quản lý lịch đặt
+      </a>
+
+      <a routerLink="/admin/users">
+        Quản lý người dùng
+      </a>
+
+      <a routerLink="/">
+        Về trang chủ
+      </a>
+    </nav>
+  </aside>
+
+  <section class="admin-content">
+    <router-outlet></router-outlet>
+  </section>
+
+</div>

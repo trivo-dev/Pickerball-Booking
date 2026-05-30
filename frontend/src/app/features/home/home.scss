@@ -11,6 +11,22 @@
 .hero-content {
   max-width: 760px;
 
+  .top-user {
+    margin-bottom: 16px;
+
+    span {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.18);
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-weight: 600;
+    }
+
+    b {
+      color: #ffffff;
+    }
+  }
+
   .badge {
     display: inline-block;
     background: rgba(255, 255, 255, 0.18);
@@ -29,12 +45,24 @@
   .description {
     font-size: 18px;
     line-height: 1.7;
+    margin-bottom: 18px;
+  }
+
+  .welcome {
+    font-size: 16px;
+    line-height: 1.6;
     margin-bottom: 28px;
+    color: #ecfeff;
+
+    b {
+      color: #ffffff;
+    }
   }
 }
 
 .actions {
   display: flex;
+  flex-wrap: wrap;
   gap: 16px;
 
   .btn {
@@ -42,16 +70,37 @@
     border-radius: 10px;
     text-decoration: none;
     font-weight: 700;
+    border: none;
+    cursor: pointer;
+    font-size: 15px;
+    transition: 0.2s ease;
   }
 
   .primary {
     background: white;
     color: #0f766e;
+
+    &:hover {
+      background: #ecfeff;
+    }
   }
 
   .secondary {
     background: #134e4a;
     color: white;
+
+    &:hover {
+      background: #0f3f3b;
+    }
+  }
+
+  .danger {
+    background: #dc2626;
+    color: white;
+
+    &:hover {
+      background: #b91c1c;
+    }
   }
 }
 
@@ -76,5 +125,36 @@
   p {
     color: #475569;
     line-height: 1.6;
+  }
+}
+
+/* Responsive cho màn hình nhỏ */
+@media (max-width: 768px) {
+  .hero {
+    padding: 36px 24px;
+    min-height: auto;
+  }
+
+  .hero-content {
+    h1 {
+      font-size: 34px;
+    }
+
+    .description {
+      font-size: 16px;
+    }
+  }
+
+  .actions {
+    flex-direction: column;
+
+    .btn {
+      width: 100%;
+      text-align: center;
+    }
+  }
+
+  .features {
+    grid-template-columns: 1fr;
   }
 }

@@ -1,12 +1,49 @@
 <header class="header">
-  <div class="logo">Pickleball Booking</div>
+  <div class="logo">
+    <a routerLink="/">Pickleball Booking</a>
+  </div>
 
   <nav>
     <a routerLink="/">Trang chủ</a>
     <a routerLink="/courts">Danh sách sân</a>
-    <a routerLink="/my-bookings">Lịch đặt của tôi</a>
-    <a routerLink="/admin/dashboard">Admin</a>
-    <a routerLink="/login">Đăng nhập</a>
+
+    <!-- Chỉ hiện khi đã đăng nhập -->
+    <a *ngIf="user" routerLink="/my-bookings">
+      Lịch đặt của tôi
+    </a>
+
+    <!-- Admin luôn hiện, dù là USER vẫn thấy -->
+    <a routerLink="/admin/dashboard">
+      Admin
+    </a>
+
+    <!-- Menu tài khoản -->
+    <div class="user-menu">
+
+      <!-- Biểu tượng người dùng -->
+      <button type="button" class="user-icon">
+        👤
+      </button>
+
+      <!-- Dropdown khi chưa đăng nhập -->
+      <div class="dropdown" *ngIf="!user">
+        <a routerLink="/login">Đăng nhập</a>
+        <a routerLink="/register">Đăng ký</a>
+      </div>
+
+      <!-- Dropdown khi đã đăng nhập -->
+      <div class="dropdown" *ngIf="user">
+        <div class="user-info">
+          <span>Xin chào</span>
+          <b>{{ user.fullName }}</b>
+        </div>
+
+        <button type="button" class="dropdown-btn" (click)="logout()">
+          Đăng xuất
+        </button>
+      </div>
+
+    </div>
   </nav>
 </header>
 

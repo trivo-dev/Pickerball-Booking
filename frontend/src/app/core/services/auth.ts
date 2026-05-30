@@ -1,53 +1,55 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
 import { User } from '../models/user.model';
+import { LoginRequest } from '../models/login-request.model';
+import { RegisterRequest } from '../models/register-request.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private currentUser: User | null = null;
 
-  login(email: string, password: string): boolean {
-    if (email === 'admin@gmail.com' && password === '123456') {
-      this.currentUser = {
-        id: 1,
-        fullName: 'Admin',
-        email,
-        phone: '0900000000',
-        role: 'ADMIN'
-      };
+  private apiUrl = 'http://localhost:8080/api/auth';
 
-      return true;
-    }
-
-    if (email === 'user@gmail.com' && password === '123456') {
-      this.currentUser = {
-        id: 2,
-        fullName: 'User Demo',
-        email,
-        phone: '0911111111',
-        role: 'USER'
-      };
-
-      return true;
-    }
-
-    return false;
+  constructor(private http: HttpClient) {
+    // Xóa dữ liệu đăng nhập cũ đang lưu bằng localStorage
+    localStorage.removeItem('user');
   }
 
-  logout(): void {
-    this.currentUser = null;
+  login(data: LoginRequest): Observable<User> {
+    return this.http.post<User>(`${this.apiUrl}/login`, data);
+  }
+
+  register(data: RegisterRequest): Observable<User> {
+    return this.http.post<User>(`${this.apiUrl}/register`, data);
+  }
+
+  saveUser(user: User): void {
+    sessionStorage.setItem('user', JSON.stringify(user));
   }
 
   getCurrentUser(): User | null {
-    return this.currentUser;
+    const userData = sessionStorage.getItem('user');
+
+    if (!userData) {
+      return null;
+    }
+
+    return JSON.parse(userData);
   }
 
   isLoggedIn(): boolean {
-    return this.currentUser !== null;
+    return this.getCurrentUser() !== null;
   }
 
   isAdmin(): boolean {
-    return this.currentUser?.role === 'ADMIN';
+    return this.getCurrentUser()?.role === 'ADMIN';
+  }
+
+  logout(): void {
+    sessionStorage.removeItem('user');
+    localStorage.removeItem('user');
   }
 }

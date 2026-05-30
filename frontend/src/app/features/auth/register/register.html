@@ -1,1 +1,69 @@
-<p>register works!</p>
+<div class="auth-container">
+  <div class="auth-card">
+    <h2>Đăng ký tài khoản</h2>
+
+    <form (ngSubmit)="onRegister()">
+
+      <div class="form-group">
+        <label>Họ và tên</label>
+        <input 
+          type="text"
+          name="fullName"
+          [(ngModel)]="registerData.fullName"
+          placeholder="Nhập họ và tên"
+        />
+      </div>
+
+      <div class="form-group">
+        <label>Email</label>
+        <input 
+          type="email"
+          name="email"
+          [(ngModel)]="registerData.email"
+          placeholder="Nhập email"
+        />
+      </div>
+
+      <div class="form-group">
+        <label>Số điện thoại</label>
+        <input 
+          type="text"
+          name="phone"
+          [(ngModel)]="registerData.phone"
+          placeholder="Nhập số điện thoại"
+        />
+      </div>
+
+      <div class="form-group">
+        <label>Mật khẩu</label>
+        <input 
+          type="password"
+          name="password"
+          [(ngModel)]="registerData.password"
+          placeholder="Nhập mật khẩu"
+        />
+      </div>
+
+      <div class="form-group">
+        <label>Xác nhận mật khẩu</label>
+        <input 
+          type="password"
+          name="confirmPassword"
+          [(ngModel)]="confirmPassword"
+          placeholder="Nhập lại mật khẩu"
+        />
+      </div>
+
+      <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+      <p class="success" *ngIf="successMessage">{{ successMessage }}</p>
+
+      <button type="submit">Đăng ký</button>
+
+      <p class="switch-page">
+        Đã có tài khoản?
+        <a routerLink="/login">Đăng nhập</a>
+      </p>
+
+    </form>
+  </div>
+</div>

@@ -11,6 +11,10 @@ import { CourtManagement } from './features/admin/court-management/court-managem
 import { BookingManagement } from './features/admin/booking-management/booking-management';
 import { Login } from './features/auth/login/login';
 import { Register } from './features/auth/register/register';
+import { Unauthorized } from './features/unauthorized/unauthorized';
+import { adminGuard } from './core/guards/admin.guard';
+import { UserManagement } from './features/admin/user-management/user-management';
+import { AdminLayout } from './layouts/admin-layout/admin-layout';
 
 export const routes: Routes = [
   {
@@ -23,12 +27,23 @@ export const routes: Routes = [
       { path: 'booking/:courtId', component: BookingForm },
       { path: 'my-bookings', component: MyBookings },
 
-      { path: 'admin/dashboard', component: Dashboard },
-      { path: 'admin/courts', component: CourtManagement },
-      { path: 'admin/bookings', component: BookingManagement }
+      {
+        path: 'admin',
+        component: AdminLayout,
+        canActivate: [adminGuard],
+        children: [
+          { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+          { path: 'dashboard', component: Dashboard },
+          { path: 'courts', component: CourtManagement },
+          { path: 'bookings', component: BookingManagement },
+          { path: 'users', component: UserManagement }
+        ]
+      },
+
     ]
   },
   { path: 'login', component: Login },
   { path: 'register', component: Register },
+  { path: 'unauthorized', component: Unauthorized },
   { path: '**', redirectTo: '' }
 ];

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 
@@ -18,20 +18,21 @@ export class MyBookings {
   private authService = inject(AuthService);
   private route = inject(ActivatedRoute);
 
-  bookings: Booking[] | null = null;
-  loading = true;
-  message: string | null = null;
+  bookings = signal<Booking[] | null>(null);
+  loading = signal(true);
+  message = signal<string | null>(null);
 
   constructor() {
     if (this.route.snapshot.queryParamMap.get('success') === 'true') {
-      this.message = 'Đặt sân thành công!';
+      this.message.set('Đặt sân thành công!');
     }
+
     this.loadBookings();
   }
 
   loadBookings(): void {
-    this.bookings = null;
-    this.loading = true;
+    this.bookings.set(null);
+    this.loading.set(true);
 
     const userId = this.authService.getCurrentUser()?.id;
 
@@ -41,13 +42,15 @@ export class MyBookings {
 
     bookingObservable.subscribe({
       next: (bookings) => {
-        this.bookings = bookings;
-        this.loading = false;
+        this.bookings.set(bookings);
+        this.loading.set(false);
       },
       error: () => {
-        this.message = 'Không thể tải danh sách đặt sân. Vui lòng thử lại.';
-        this.bookings = [];
-        this.loading = false;
+        this.message.set(
+          'Không thể tải danh sách đặt sân. Vui lòng thử lại.'
+        );
+        this.bookings.set([]);
+        this.loading.set(false);
       },
     });
   }
@@ -55,11 +58,15 @@ export class MyBookings {
   cancelBooking(id: number): void {
     this.bookingService.cancelBooking(id).subscribe({
       next: () => {
-        this.message = 'Yêu cầu hủy đã được gửi. Tình trạng sẽ cập nhật.';
+        this.message.set(
+          'Yêu cầu hủy đã được gửi. Tình trạng sẽ cập nhật.'
+        );
         this.loadBookings();
       },
       error: () => {
-        this.message = 'Hủy đặt sân thất bại. Vui lòng thử lại.';
+        this.message.set(
+          'Hủy đặt sân thất bại. Vui lòng thử lại.'
+        );
       },
     });
   }

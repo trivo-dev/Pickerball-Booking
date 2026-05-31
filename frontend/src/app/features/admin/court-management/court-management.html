@@ -1,1 +1,160 @@
-<p>court-management works!</p>
+<section class="court-admin">
+  <div class="page-header">
+    <div>
+      <h1>Quản lý sân</h1>
+      <p>Thêm, sửa, xóa và theo dõi trạng thái sân.</p>
+    </div>
+
+    <button type="button" class="reload-btn" (click)="loadCourts()">
+      Tải lại
+    </button>
+  </div>
+
+  <div class="stat-grid">
+    <div class="stat-card">
+      <span>Tổng sân</span>
+      <strong>{{ totalCourts() }}</strong>
+    </div>
+
+    <div class="stat-card">
+      <span>Sân hoạt động</span>
+      <strong>{{ availableCourts() }}</strong>
+    </div>
+
+    <div class="stat-card">
+      <span>Sân bảo trì</span>
+      <strong>{{ maintenanceCourts() }}</strong>
+    </div>
+  </div>
+
+  <form class="form-box" (ngSubmit)="saveCourt()">
+    <h2>{{ isEdit() ? 'Cập nhật sân' : 'Thêm sân mới' }}</h2>
+
+    <div class="form-grid">
+      <input
+        type="text"
+        placeholder="Tên sân"
+        [(ngModel)]="formData.name"
+        name="name"
+        required
+      />
+
+      <input
+        type="text"
+        placeholder="Địa điểm"
+        [(ngModel)]="formData.location"
+        name="location"
+        required
+      />
+
+      <input
+        type="number"
+        placeholder="Giá mỗi giờ"
+        [(ngModel)]="formData.pricePerHour"
+        name="pricePerHour"
+        required
+      />
+
+      <select [(ngModel)]="formData.status" name="status">
+        <option value="AVAILABLE">AVAILABLE</option>
+        <option value="MAINTENANCE">MAINTENANCE</option>
+      </select>
+    </div>
+
+    <input
+      type="text"
+      placeholder="Link hình ảnh"
+      [(ngModel)]="formData.imageUrl"
+      name="imageUrl"
+    />
+
+    <textarea
+      placeholder="Mô tả"
+      [(ngModel)]="formData.description"
+      name="description"
+    ></textarea>
+
+    <div class="form-actions">
+      <button type="submit">
+        {{ isEdit() ? 'Cập nhật sân' : 'Thêm sân' }}
+      </button>
+
+      <button
+        type="button"
+        class="btn-secondary"
+        *ngIf="isEdit()"
+        (click)="resetForm()"
+      >
+        Hủy sửa
+      </button>
+    </div>
+  </form>
+
+  <div class="filter-box">
+    <input
+      type="text"
+      placeholder="Tìm theo tên sân hoặc địa điểm..."
+      [value]="searchText()"
+      (input)="updateSearchText($event)"
+    />
+
+    <select [value]="statusFilter()" (change)="updateStatusFilter($event)">
+      <option value="ALL">Tất cả trạng thái</option>
+      <option value="AVAILABLE">AVAILABLE</option>
+      <option value="MAINTENANCE">MAINTENANCE</option>
+    </select>
+  </div>
+
+  <div *ngIf="loading()" class="loading">
+    Đang tải danh sách sân...
+  </div>
+
+  <div *ngIf="!loading() && filteredCourts().length === 0" class="empty">
+    Không có sân nào.
+  </div>
+
+  <div class="table-wrapper" *ngIf="!loading() && filteredCourts().length > 0">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Tên sân</th>
+          <th>Địa điểm</th>
+          <th>Giá/giờ</th>
+          <th>Trạng thái</th>
+          <th>Thao tác</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let court of filteredCourts()">
+          <td>{{ court.id }}</td>
+          <td>{{ court.name }}</td>
+          <td>{{ court.location }}</td>
+          <td>{{ court.pricePerHour | number }} VNĐ</td>
+
+          <td>
+            <span class="status" [ngClass]="court.status.toLowerCase()">
+              {{ court.status }}
+            </span>
+          </td>
+
+          <td class="actions">
+            <button type="button" class="btn-edit" (click)="editCourt(court)">
+              Sửa
+            </button>
+
+            <button
+              type="button"
+              class="btn-danger"
+              [disabled]="deletingId() === court.id"
+              (click)="deleteCourt(court.id)"
+            >
+              {{ deletingId() === court.id ? 'Đang xóa...' : 'Xóa' }}
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>

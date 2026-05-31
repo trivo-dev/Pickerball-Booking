@@ -15,7 +15,7 @@ export class AuthService {
 
   constructor(private http: HttpClient) {
     // Xóa dữ liệu đăng nhập cũ đang lưu bằng localStorage
-    localStorage.removeItem('user');
+    
   }
 
   login(data: LoginRequest): Observable<User> {

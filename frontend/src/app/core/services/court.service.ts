@@ -21,4 +21,15 @@ export class CourtService {
       `${this.apiUrl}/${id}`
     );
   }
+  createCourt(court: Omit<Court, 'id'>): Observable<Court> {
+  return this.http.post<Court>(this.apiUrl, court);
+}
+
+updateCourt(id: number, court: Court): Observable<Court> {
+  return this.http.put<Court>(`${this.apiUrl}/${id}`, court);
+}
+
+deleteCourt(id: number): Observable<void> {
+  return this.http.delete<void>(`${this.apiUrl}/${id}`);
+}
 }

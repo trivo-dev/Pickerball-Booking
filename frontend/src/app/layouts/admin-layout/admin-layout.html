@@ -1,22 +1,25 @@
 <div class="admin-layout">
-
   <aside class="admin-sidebar">
     <h2>Admin</h2>
 
     <nav>
-      <a routerLink="/admin/dashboard">
+      <a
+        routerLink="/admin/dashboard"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
         Tổng quan
       </a>
 
-      <a routerLink="/admin/courts">
+      <a routerLink="/admin/courts" routerLinkActive="active">
         Quản lý sân
       </a>
 
-      <a routerLink="/admin/bookings">
+      <a routerLink="/admin/bookings" routerLinkActive="active">
         Quản lý lịch đặt
       </a>
 
-      <a routerLink="/admin/users">
+      <a routerLink="/admin/users" routerLinkActive="active">
         Quản lý người dùng
       </a>
 
@@ -29,5 +32,4 @@
   <section class="admin-content">
     <router-outlet></router-outlet>
   </section>
-
 </div>

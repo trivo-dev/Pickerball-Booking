@@ -1,1 +1,119 @@
-<p>booking-management works!</p>
+<section class="booking-admin">
+  <div class="page-header">
+    <div>
+      <h1>Quản lý lịch đặt</h1>
+      <p>Theo dõi, tìm kiếm và xác nhận lịch đặt sân pickleball.</p>
+    </div>
+
+    <button class="reload-btn" type="button" (click)="loadBookings()">
+      Tải lại
+    </button>
+  </div>
+
+  <div class="stat-grid">
+    <div class="stat-card">
+      <span>Tổng lịch đặt</span>
+      <strong>{{ totalBookings() }}</strong>
+    </div>
+
+    <div class="stat-card">
+      <span>Chờ xác nhận</span>
+      <strong>{{ pendingBookings() }}</strong>
+    </div>
+
+    <div class="stat-card">
+      <span>Đã xác nhận</span>
+      <strong>{{ confirmedBookings() }}</strong>
+    </div>
+
+    <div class="stat-card">
+      <span>Doanh thu</span>
+      <strong>{{ formatMoney(totalRevenue()) }}</strong>
+    </div>
+  </div>
+
+  <div class="filter-box">
+    <input
+      type="text"
+      placeholder="Tìm theo tên khách, số điện thoại hoặc tên sân..."
+      [value]="searchText()"
+      (input)="updateSearchText($event)"
+    />
+
+    <select [value]="statusFilter()" (change)="updateStatusFilter($event)">
+      <option value="ALL">Tất cả trạng thái</option>
+      <option value="PENDING">Chờ xác nhận</option>
+      <option value="CONFIRMED">Đã xác nhận</option>
+      <option value="CANCELLED">Đã hủy</option>
+    </select>
+  </div>
+
+  <div *ngIf="loading()" class="loading">
+    Đang tải danh sách lịch đặt...
+  </div>
+
+  <div *ngIf="!loading() && filteredBookings().length === 0" class="empty">
+    Không có lịch đặt nào.
+  </div>
+
+  <div class="table-wrapper" *ngIf="!loading() && filteredBookings().length > 0">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Khách hàng</th>
+          <th>Số điện thoại</th>
+          <th>Sân</th>
+          <th>Ngày đặt</th>
+          <th>Khung giờ</th>
+          <th>Tổng tiền</th>
+          <th>Trạng thái</th>
+          <th>Thao tác</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let booking of filteredBookings()">
+          <td>{{ booking.id }}</td>
+          <td>{{ booking.customerName }}</td>
+          <td>{{ booking.phone }}</td>
+          <td>{{ booking.courtName }}</td>
+          <td>{{ booking.bookingDate }}</td>
+
+          <td>
+            {{ booking.startTime }} - {{ booking.endTime }}
+          </td>
+
+          <td>{{ formatMoney(booking.totalPrice) }}</td>
+
+          <td>
+            <span class="status" [ngClass]="booking.status.toLowerCase()">
+              {{ getStatusLabel(booking.status) }}
+            </span>
+          </td>
+
+          <td class="actions">
+            <button
+              type="button"
+              class="btn-confirm"
+              *ngIf="booking.status === 'PENDING'"
+              [disabled]="confirmingId() === booking.id"
+              (click)="confirmBooking(booking.id)"
+            >
+              {{ confirmingId() === booking.id ? 'Đang xác nhận...' : 'Xác nhận' }}
+            </button>
+
+            <button
+              type="button"
+              class="btn-delete"
+              [disabled]="deletingId() === booking.id"
+              (click)="deleteBooking(booking.id)"
+            >
+              {{ deletingId() === booking.id ? 'Đang xóa...' : 'Xóa' }}
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>

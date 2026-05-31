@@ -1,0 +1,179 @@
+.booking-admin {
+  color: #0f172a;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+
+  h1 {
+    margin: 0;
+    font-size: 28px;
+  }
+
+  p {
+    margin: 6px 0 0;
+    color: #64748b;
+  }
+}
+
+.reload-btn {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 10px;
+  background: #0f766e;
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+
+  span {
+    color: #64748b;
+    font-size: 14px;
+  }
+
+  strong {
+    display: block;
+    margin-top: 10px;
+    font-size: 24px;
+  }
+}
+
+.filter-box {
+  display: grid;
+  grid-template-columns: 1fr 220px;
+  gap: 14px;
+  background: white;
+  padding: 18px;
+  border-radius: 16px;
+  margin-bottom: 24px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+
+  input,
+  select {
+    padding: 12px 14px;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    font-size: 15px;
+    outline: none;
+  }
+}
+
+.table-wrapper {
+  background: white;
+  border-radius: 16px;
+  overflow-x: auto;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 1050px;
+}
+
+th,
+td {
+  padding: 14px;
+  border-bottom: 1px solid #e2e8f0;
+  text-align: left;
+  vertical-align: middle;
+}
+
+th {
+  background: #f1f5f9;
+  color: #0f172a;
+  font-size: 14px;
+}
+
+.status {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.status.pending {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.status.confirmed {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status.cancelled {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+button {
+  border: none;
+  border-radius: 10px;
+  padding: 9px 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn-confirm {
+  background: #2563eb;
+  color: white;
+}
+
+.btn-delete {
+  background: #dc2626;
+  color: white;
+}
+
+.loading,
+.empty {
+  background: white;
+  padding: 24px;
+  border-radius: 16px;
+  text-align: center;
+  color: #64748b;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (max-width: 900px) {
+  .stat-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .filter-box {
+    grid-template-columns: 1fr;
+  }
+
+  .page-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+  }
+}

@@ -1,17 +1,27 @@
 <div class="my-bookings-page">
   <h1>Đơn đặt sân của tôi</h1>
 
-  <div class="message" *ngIf="message">{{ message }}</div>
+  <div class="message" *ngIf="message()">
+    {{ message() }}
+  </div>
 
-  <div *ngIf="loading" class="loading">Đang tải lịch sử đặt sân...</div>
+  <div *ngIf="loading()" class="loading">
+    Đang tải lịch sử đặt sân...
+  </div>
 
-  <div *ngIf="!loading && bookings && bookings.length > 0; else emptyState" class="bookings-list">
-    <div class="booking-card" *ngFor="let booking of bookings">
+  <div
+    *ngIf="!loading() && bookings() && bookings()!.length > 0; else emptyState"
+    class="bookings-list"
+  >
+    <div class="booking-card" *ngFor="let booking of bookings()">
       <div class="booking-info">
         <h2>{{ booking.courtName }}</h2>
         <p>Ngày: {{ booking.bookingDate }}</p>
         <p>Giờ: {{ booking.startTime }} - {{ booking.endTime }}</p>
-        <p>Giá: {{ booking.totalPrice | currency: 'VND' : 'symbol' : '1.0-0' }}</p>
+        <p>
+          Giá:
+          {{ booking.totalPrice | currency:'VND':'symbol':'1.0-0' }}
+        </p>
         <p>
           Trạng thái:
           <span
@@ -19,10 +29,12 @@
             [class.pending]="booking.status === 'PENDING'"
             [class.confirmed]="booking.status === 'CONFIRMED'"
             [class.cancelled]="booking.status === 'CANCELLED'"
-            >{{ booking.status }}</span
           >
+            {{ booking.status }}
+          </span>
         </p>
       </div>
+
       <button
         class="cancel-btn"
         *ngIf="booking.status !== 'CANCELLED'"

@@ -1,7 +1,29 @@
 <section class="user-management">
   <div class="page-header">
     <h1>Quản lý người dùng</h1>
-    <p>Admin có thể xem danh sách người dùng, đổi quyền và xóa tài khoản.</p>
+    <p>Admin có thể xem danh sách người dùng, tìm kiếm, đổi quyền và xóa tài khoản.</p>
+  </div>
+
+  <!-- Tổng số người dùng -->
+  <div class="summary-card">
+    <div>
+      <span>Tổng số người dùng</span>
+      <h2>{{ users().length }}</h2>
+    </div>
+  </div>
+
+  <div class="search-box">
+    <input
+      type="text"
+      name="keyword"
+      [ngModel]="keyword()"
+      (ngModelChange)="onKeywordChange($event)"
+      placeholder="Tìm theo tên, email hoặc số điện thoại..."
+    />
+
+    <button type="button" class="clear-btn" (click)="clearSearch()">
+      Làm mới
+    </button>
   </div>
 
   <p *ngIf="isLoading()">
@@ -62,7 +84,7 @@
 
         <tr *ngIf="!isLoading() && users().length === 0">
           <td colspan="7" class="empty">
-            Chưa có người dùng nào
+            Không tìm thấy người dùng nào
           </td>
         </tr>
       </tbody>

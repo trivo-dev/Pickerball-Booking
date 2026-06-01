@@ -20,15 +20,15 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<UserResponse>> getAllUsers() {
-        return ResponseEntity.ok(userService.getAllUsers());
+    public ResponseEntity<List<UserResponse>> getUsers(
+            @RequestParam(required = false) String keyword) {
+        return ResponseEntity.ok(userService.searchUsers(keyword));
     }
 
     @PutMapping("/{id}/role")
     public ResponseEntity<?> updateUserRole(
             @PathVariable Long id,
-            @RequestBody UpdateUserRoleRequest request
-    ) {
+            @RequestBody UpdateUserRoleRequest request) {
         try {
             UserResponse response = userService.updateUserRole(id, request);
             return ResponseEntity.ok(response);

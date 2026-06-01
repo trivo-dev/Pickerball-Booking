@@ -15,10 +15,13 @@ import { UserService } from '../../../core/services/user.service';
 export class UserManagement implements OnInit {
 
   users = signal<User[]>([]);
+  keyword = signal('');
 
   errorMessage = signal('');
   successMessage = signal('');
   isLoading = signal(false);
+
+  private searchTimer: any;
 
   constructor(private userService: UserService) {}
 
@@ -29,22 +32,33 @@ export class UserManagement implements OnInit {
   loadUsers(): void {
     this.isLoading.set(true);
     this.errorMessage.set('');
-    this.successMessage.set('');
 
-    this.userService.getAllUsers().subscribe({
+    this.userService.getAllUsers(this.keyword()).subscribe({
       next: (res: User[]) => {
-        console.log('Danh sách người dùng:', res);
-
         this.users.set(res);
         this.isLoading.set(false);
       },
       error: (err) => {
         console.log('Lỗi tải người dùng:', err);
-
         this.errorMessage.set('Không tải được danh sách người dùng');
         this.isLoading.set(false);
       }
     });
+  }
+
+  onKeywordChange(value: string): void {
+    this.keyword.set(value);
+
+    clearTimeout(this.searchTimer);
+
+    this.searchTimer = setTimeout(() => {
+      this.loadUsers();
+    }, 300);
+  }
+
+  clearSearch(): void {
+    this.keyword.set('');
+    this.loadUsers();
   }
 
   changeRole(user: User, role: string): void {

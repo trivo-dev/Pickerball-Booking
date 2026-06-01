@@ -26,8 +26,7 @@ public class UserService {
                         user.getFullName(),
                         user.getEmail(),
                         user.getPhone(),
-                        user.getRole().name()
-                ))
+                        user.getRole().name()))
                 .toList();
     }
 
@@ -49,8 +48,7 @@ public class UserService {
                 savedUser.getFullName(),
                 savedUser.getEmail(),
                 savedUser.getPhone(),
-                savedUser.getRole().name()
-        );
+                savedUser.getRole().name());
     }
 
     public void deleteUser(Long id) {
@@ -59,5 +57,30 @@ public class UserService {
         }
 
         userRepository.deleteById(id);
+    }
+
+    public List<UserResponse> searchUsers(String keyword) {
+        List<User> users;
+
+        if (keyword == null || keyword.trim().isEmpty()) {
+            users = userRepository.findAll();
+        } else {
+            String searchKeyword = keyword.trim();
+
+            users = userRepository
+                    .findByFullNameContainingIgnoreCaseOrEmailContainingIgnoreCaseOrPhoneContainingIgnoreCase(
+                            searchKeyword,
+                            searchKeyword,
+                            searchKeyword);
+        }
+
+        return users.stream()
+                .map(user -> new UserResponse(
+                        user.getId(),
+                        user.getFullName(),
+                        user.getEmail(),
+                        user.getPhone(),
+                        user.getRole().name()))
+                .toList();
     }
 }

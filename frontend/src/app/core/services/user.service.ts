@@ -11,9 +11,15 @@ export class UserService {
 
   private apiUrl = 'http://localhost:8080/api/admin/users';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-  getAllUsers(): Observable<User[]> {
+  getAllUsers(keyword: string = ''): Observable<User[]> {
+    if (keyword.trim()) {
+      return this.http.get<User[]>(
+        `${this.apiUrl}?keyword=${encodeURIComponent(keyword)}`
+      );
+    }
+
     return this.http.get<User[]>(this.apiUrl);
   }
 

@@ -5,9 +5,7 @@
     {{ message() }}
   </div>
 
-  <div *ngIf="loading()" class="loading">
-    Đang tải lịch sử đặt sân...
-  </div>
+  <div *ngIf="loading()" class="loading">Đang tải lịch sử đặt sân...</div>
 
   <div
     *ngIf="!loading() && bookings() && bookings()!.length > 0; else emptyState"
@@ -20,7 +18,7 @@
         <p>Giờ: {{ booking.startTime }} - {{ booking.endTime }}</p>
         <p>
           Giá:
-          {{ booking.totalPrice | currency:'VND':'symbol':'1.0-0' }}
+          {{ booking.totalPrice | currency: 'VND' : 'symbol' : '1.0-0' }}
         </p>
         <p>
           Trạng thái:

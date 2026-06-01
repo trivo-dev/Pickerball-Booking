@@ -11,15 +11,14 @@ import { RegisterRequest } from '../../../core/models/register-request.model';
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './register.html',
-  styleUrl: './register.scss'
+  styleUrl: './register.scss',
 })
 export class Register {
-
   registerData: RegisterRequest = {
     fullName: '',
     email: '',
     password: '',
-    phone: ''
+    phone: '',
   };
 
   confirmPassword = '';
@@ -29,27 +28,41 @@ export class Register {
 
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
   ) {}
 
   onRegister(): void {
     this.errorMessage = '';
     this.successMessage = '';
 
-    if (
-      !this.registerData.fullName ||
-      !this.registerData.email ||
-      !this.registerData.password ||
-      !this.registerData.phone
-    ) {
+    const fullName = this.registerData.fullName.trim();
+    const email = this.registerData.email.trim();
+    const password = this.registerData.password.trim();
+    const phone = this.registerData.phone.trim();
+
+    if (!fullName || !email || !password || !phone) {
       this.errorMessage = 'Vui lòng nhập đầy đủ thông tin';
       return;
     }
 
-    if (this.registerData.password !== this.confirmPassword) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(email)) {
+      this.errorMessage = 'Email không đúng định dạng';
+      return;
+    }
+
+    if (password !== this.confirmPassword.trim()) {
       this.errorMessage = 'Mật khẩu xác nhận không khớp';
       return;
     }
+
+    this.registerData = {
+      fullName,
+      email,
+      password,
+      phone,
+    };
 
     this.authService.register(this.registerData).subscribe({
       next: (res) => {
@@ -61,7 +74,7 @@ export class Register {
       },
       error: (err) => {
         this.errorMessage = err.error || 'Đăng ký thất bại';
-      }
+      },
     });
   }
 }

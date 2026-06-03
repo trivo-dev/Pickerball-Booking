@@ -20,10 +20,13 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(columnDefinition = "DATE")
     private LocalDate bookingDate;
 
+    @Column(columnDefinition = "TIME")
     private LocalTime startTime;
 
+    @Column(columnDefinition = "TIME")
     private LocalTime endTime;
 
     private Double totalPrice;

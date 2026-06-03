@@ -82,6 +82,31 @@ export class BookingForm {
       return;
     }
 
+    // Kiểm tra xem khung giờ có trùng không
+    this.bookingService
+      .checkAvailability(court.id, this.bookingDate, this.startTime, this.endTime)
+      .subscribe({
+        next: (isAvailable) => {
+          if (!isAvailable) {
+            this.message = 'Khung giờ này đã được đặt. Vui lòng chọn khung giờ khác.';
+            return;
+          }
+
+          // Tiếp tục đặt sân nếu không trùng lịch
+          this.proceedWithBooking();
+        },
+        error: () => {
+          this.message = 'Lỗi kiểm tra tính khả dụng. Vui lòng thử lại.';
+        },
+      });
+  }
+
+  private proceedWithBooking(): void {
+    const court = this.court();
+    if (!court) {
+      return;
+    }
+
     const userId = this.authService.getCurrentUser()?.id;
 
     const booking: Omit<Booking, 'id' | 'status'> & { userId?: number } = {

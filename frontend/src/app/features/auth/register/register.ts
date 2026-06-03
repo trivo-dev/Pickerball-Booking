@@ -36,20 +36,35 @@ export class Register {
     this.errorMessage = '';
     this.successMessage = '';
 
-    if (
-      !this.registerData.fullName ||
-      !this.registerData.email ||
-      !this.registerData.password ||
-      !this.registerData.phone
-    ) {
+    const fullName = this.registerData.fullName.trim();
+    const email = this.registerData.email.trim();
+    const password = this.registerData.password.trim();
+    const phone = this.registerData.phone.trim();
+
+    if (!fullName || !email || !password || !phone) {
       this.errorMessage = 'Vui lòng nhập đầy đủ thông tin';
       return;
     }
 
-    if (this.registerData.password !== this.confirmPassword) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(email)) {
+      this.errorMessage = 'Email không đúng định dạng';
+      return;
+    }
+
+    
+    if (password !== this.confirmPassword.trim()) {
       this.errorMessage = 'Mật khẩu xác nhận không khớp';
       return;
     }
+
+    this.registerData = {
+      fullName,
+      email,
+      password,
+      phone
+    };
 
     this.authService.register(this.registerData).subscribe({
       next: (res) => {

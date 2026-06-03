@@ -1,5 +1,23 @@
+<div class="search-box">
+  <input type="text" placeholder="Nhập tên sân hoặc địa chỉ..." [value]="searchInput()"
+    (input)="onSearchTextChange($event)" />
+
+  <input type="number" placeholder="Giá tối đa" [value]="priceInput() ?? ''" (input)="onPriceChange($event)" />
+
+  <button type="button" (click)="searchCourts()">
+    Tìm kiếm
+  </button>
+
+  <button type="button" (click)="clearSearch()">
+    Xóa
+  </button>
+</div>
+<p *ngIf="!loading() && filteredCourts().length === 0">
+  Không tìm thấy sân phù hợp
+</p>
+
 <div class="court-list">
-  <div class="court-card" *ngFor="let court of courts()">
+  <div class="court-card" *ngFor="let court of filteredCourts()">
     <img [src]="court.imageUrl" [alt]="court.name" />
 
     <div class="content">

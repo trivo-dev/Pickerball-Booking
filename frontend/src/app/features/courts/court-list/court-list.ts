@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, computed } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
@@ -19,6 +19,50 @@ export class CourtList implements OnInit {
   courts = signal<Court[]>([]);
   loading = signal(true);
   error = signal<string | null>(null);
+  searchInput = signal('');
+  priceInput = signal<number | null>(null);
+  appliedSearch = signal('');
+  appliedPrice = signal<number | null>(null);
+
+  filteredCourts = computed(() => {
+    const keyword = this.appliedSearch().trim().toLowerCase();
+    const maxPrice = this.appliedPrice();
+
+    return this.courts().filter(court => {
+      const matchText =
+        !keyword ||
+        court.name.toLowerCase().includes(keyword) ||
+        court.location.toLowerCase().includes(keyword);
+
+      const matchPrice =
+        maxPrice === null ||
+        court.pricePerHour <= maxPrice;
+
+      return matchText && matchPrice;
+    });
+  });
+
+  onSearchTextChange(event: Event) {
+    const value = (event.target as HTMLInputElement).value;
+    this.searchInput.set(value);
+  }
+
+  onPriceChange(event: Event) {
+    const value = (event.target as HTMLInputElement).value;
+    this.priceInput.set(value ? Number(value) : null);
+  }
+
+  searchCourts() {
+    this.appliedSearch.set(this.searchInput());
+    this.appliedPrice.set(this.priceInput());
+  }
+
+  clearSearch() {
+    this.searchInput.set('');
+    this.priceInput.set(null);
+    this.appliedSearch.set('');
+    this.appliedPrice.set(null);
+  }
 
   ngOnInit() {
     this.loadCourts();

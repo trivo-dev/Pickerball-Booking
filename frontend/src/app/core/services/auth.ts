@@ -52,4 +52,23 @@ export class AuthService {
     sessionStorage.removeItem('user');
     localStorage.removeItem('user');
   }
+
+
+  forgotPassword(data: { email: string }) {
+  return this.http.post(`${this.apiUrl}/forgot-password`, data, {
+    responseType: 'text'
+  });
+}
+
+resetPassword(data: { email: string; pin: string; newPassword: string }) {
+  return this.http.post(`${this.apiUrl}/reset-password`, data, {
+    responseType: 'text'
+  });
+}
+
+verifyResetPin(data: { email: string; pin: string }) {
+  return this.http.post(`${this.apiUrl}/verify-reset-pin`, data, {
+    responseType: 'text'
+  });
+}
 }

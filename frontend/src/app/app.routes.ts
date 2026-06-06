@@ -15,6 +15,8 @@ import { Unauthorized } from './features/unauthorized/unauthorized';
 import { adminGuard } from './core/guards/admin.guard';
 import { UserManagement } from './features/admin/user-management/user-management';
 import { AdminLayout } from './layouts/admin-layout/admin-layout';
+import { ForgotPassword } from './features/auth/forgot-password/forgot-password';
+
 
 export const routes: Routes = [
   {
@@ -44,6 +46,7 @@ export const routes: Routes = [
   },
   { path: 'login', component: Login },
   { path: 'register', component: Register },
+  { path: 'forgot-password', component: ForgotPassword },
   { path: 'unauthorized', component: Unauthorized },
   { path: '**', redirectTo: '' }
 ];

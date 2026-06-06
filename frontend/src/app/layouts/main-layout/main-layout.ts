@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
@@ -15,7 +15,6 @@ import { User } from '../../core/models/user.model';
 export class MainLayout implements OnInit {
 
   user: User | null = null;
-  isUserMenuOpen = false;
 
   constructor(
     private authService: AuthService,
@@ -26,24 +25,9 @@ export class MainLayout implements OnInit {
     this.user = this.authService.getCurrentUser();
   }
 
-  toggleUserMenu(event: MouseEvent): void {
-    event.stopPropagation();
-    this.isUserMenuOpen = !this.isUserMenuOpen;
-  }
-
-  closeUserMenu(): void {
-    this.isUserMenuOpen = false;
-  }
-
   logout(): void {
     this.authService.logout();
     this.user = null;
-    this.isUserMenuOpen = false;
     this.router.navigate(['/login']);
-  }
-
-  @HostListener('document:click')
-  onDocumentClick(): void {
-    this.isUserMenuOpen = false;
   }
 }

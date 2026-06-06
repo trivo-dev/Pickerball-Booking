@@ -1,5 +1,7 @@
 package com.pickleball.backend.controller;
 
+import com.pickleball.backend.dto.CreateUserRequest;
+import com.pickleball.backend.dto.UpdateUserRequest;
 import com.pickleball.backend.dto.UpdateUserRoleRequest;
 import com.pickleball.backend.dto.UserResponse;
 import com.pickleball.backend.service.UserService;
@@ -20,15 +22,38 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<UserResponse>> getUsers(
-            @RequestParam(required = false) String keyword) {
-        return ResponseEntity.ok(userService.searchUsers(keyword));
+    public ResponseEntity<List<UserResponse>> getAllUsers() {
+        return ResponseEntity.ok(userService.getAllUsers());
+    }
+
+    @PostMapping
+    public ResponseEntity<?> createUser(@RequestBody CreateUserRequest request) {
+        try {
+            UserResponse response = userService.createUser(request);
+            return ResponseEntity.ok(response);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateUser(
+            @PathVariable Long id,
+            @RequestBody UpdateUserRequest request
+    ) {
+        try {
+            UserResponse response = userService.updateUser(id, request);
+            return ResponseEntity.ok(response);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PutMapping("/{id}/role")
     public ResponseEntity<?> updateUserRole(
             @PathVariable Long id,
-            @RequestBody UpdateUserRoleRequest request) {
+            @RequestBody UpdateUserRoleRequest request
+    ) {
         try {
             UserResponse response = userService.updateUserRole(id, request);
             return ResponseEntity.ok(response);

@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { Booking } from '../models/booking.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class BookingService {
   private http = inject(HttpClient);
@@ -26,5 +26,21 @@ export class BookingService {
 
   confirmBooking(id: number): Observable<Booking> {
     return this.http.put<Booking>(`${this.apiUrl}/${id}/confirm`, {});
+  }
+
+  checkAvailability(
+    courtId: number,
+    bookingDate: string,
+    startTime: string,
+    endTime: string,
+  ): Observable<boolean> {
+    return this.http.get<boolean>(`${this.apiUrl}/check-availability`, {
+      params: {
+        courtId: courtId.toString(),
+        bookingDate,
+        startTime,
+        endTime,
+      },
+    });
   }
 }

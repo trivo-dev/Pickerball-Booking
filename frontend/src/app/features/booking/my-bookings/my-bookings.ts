@@ -46,9 +46,7 @@ export class MyBookings {
         this.loading.set(false);
       },
       error: () => {
-        this.message.set(
-          'Không thể tải danh sách đặt sân. Vui lòng thử lại.'
-        );
+        this.message.set('Không thể tải danh sách đặt sân. Vui lòng thử lại.');
         this.bookings.set([]);
         this.loading.set(false);
       },
@@ -58,15 +56,11 @@ export class MyBookings {
   cancelBooking(id: number): void {
     this.bookingService.cancelBooking(id).subscribe({
       next: () => {
-        this.message.set(
-          'Yêu cầu hủy đã được gửi. Tình trạng sẽ cập nhật.'
-        );
+        this.message.set('Yêu cầu hủy đã được gửi. Tình trạng sẽ cập nhật.');
         this.loadBookings();
       },
       error: () => {
-        this.message.set(
-          'Hủy đặt sân thất bại. Vui lòng thử lại.'
-        );
+        this.message.set('Hủy đặt sân thất bại. Vui lòng thử lại.');
       },
     });
   }

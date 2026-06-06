@@ -77,27 +77,3 @@ button {
     text-decoration: none;
   }
 }
-.header {
-  height: 64px;
-  padding: 0 40px;
-  background: #0f766e;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.12);
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-
-  .logo {
-    font-size: 22px;
-    font-weight: 700;
-
-    a {
-      color: white;
-      text-decoration: none;
-    }
-  }
-
-}

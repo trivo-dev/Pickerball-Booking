@@ -5,7 +5,6 @@ import com.pickleball.backend.dto.UserResponse;
 import com.pickleball.backend.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.pickleball.backend.dto.ChangePasswordRequest;
 
 import java.util.List;
 
@@ -43,18 +42,6 @@ public class UserController {
         try {
             userService.deleteUser(id);
             return ResponseEntity.ok("Xóa người dùng thành công");
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
-
-    @PutMapping("/{id}/change-password")
-    public ResponseEntity<?> changePassword(
-            @PathVariable Long id,
-            @RequestBody ChangePasswordRequest request) {
-        try {
-            userService.changePassword(id, request);
-            return ResponseEntity.ok("Đổi mật khẩu thành công");
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

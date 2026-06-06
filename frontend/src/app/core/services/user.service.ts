@@ -4,6 +4,21 @@ import { Observable } from 'rxjs';
 
 import { User } from '../models/user.model';
 
+export interface CreateUserRequest {
+  fullName: string;
+  email: string;
+  password: string;
+  phone: string;
+  role: string;
+}
+
+export interface UpdateUserRequest {
+  fullName: string;
+  email: string;
+  phone: string;
+  role: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -11,16 +26,18 @@ export class UserService {
 
   private apiUrl = 'http://localhost:8080/api/admin/users';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-  getAllUsers(keyword: string = ''): Observable<User[]> {
-    if (keyword.trim()) {
-      return this.http.get<User[]>(
-        `${this.apiUrl}?keyword=${encodeURIComponent(keyword)}`
-      );
-    }
-
+  getAllUsers(): Observable<User[]> {
     return this.http.get<User[]>(this.apiUrl);
+  }
+
+  createUser(data: CreateUserRequest): Observable<User> {
+    return this.http.post<User>(this.apiUrl, data);
+  }
+
+  updateUser(id: number, data: UpdateUserRequest): Observable<User> {
+    return this.http.put<User>(`${this.apiUrl}/${id}`, data);
   }
 
   updateUserRole(id: number, role: string): Observable<User> {

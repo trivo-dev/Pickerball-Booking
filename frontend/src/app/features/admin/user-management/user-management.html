@@ -1,28 +1,12 @@
 <section class="user-management">
   <div class="page-header">
-    <h1>Quản lý người dùng</h1>
-    <p>Admin có thể xem danh sách người dùng, tìm kiếm, đổi quyền và xóa tài khoản.</p>
-  </div>
-
-  <!-- Tổng số người dùng -->
-  <div class="summary-card">
     <div>
-      <span>Tổng số người dùng</span>
-      <h2>{{ users().length }}</h2>
+      <h1>Quản lý người dùng</h1>
+      <p>Admin có thể thêm, sửa, đổi quyền và xóa tài khoản người dùng.</p>
     </div>
-  </div>
 
-  <div class="search-box">
-    <input
-      type="text"
-      name="keyword"
-      [ngModel]="keyword()"
-      (ngModelChange)="onKeywordChange($event)"
-      placeholder="Tìm theo tên, email hoặc số điện thoại..."
-    />
-
-    <button type="button" class="clear-btn" (click)="clearSearch()">
-      Làm mới
+    <button type="button" class="add-btn" (click)="openAddForm()">
+      + Thêm người dùng
     </button>
   </div>
 
@@ -37,6 +21,82 @@
   <p class="error" *ngIf="errorMessage()">
     {{ errorMessage() }}
   </p>
+
+  <div class="form-card" *ngIf="isFormVisible()">
+    <h2>
+      {{ isEditMode() ? 'Sửa thông tin người dùng' : 'Thêm người dùng' }}
+    </h2>
+
+    <form (ngSubmit)="saveUser()">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Họ tên</label>
+          <input
+            type="text"
+            [ngModel]="formData().fullName"
+            (ngModelChange)="updateFormField('fullName', $event)"
+            name="fullName"
+            placeholder="Nhập họ tên"
+          />
+        </div>
+
+        <div class="form-group">
+          <label>Email</label>
+          <input
+            type="email"
+            [ngModel]="formData().email"
+            (ngModelChange)="updateFormField('email', $event)"
+            name="email"
+            placeholder="Nhập email"
+          />
+        </div>
+
+        <div class="form-group" *ngIf="!isEditMode()">
+          <label>Mật khẩu</label>
+          <input
+            type="password"
+            [ngModel]="formData().password"
+            (ngModelChange)="updateFormField('password', $event)"
+            name="password"
+            placeholder="Nhập mật khẩu"
+          />
+        </div>
+
+        <div class="form-group">
+          <label>Số điện thoại</label>
+          <input
+            type="text"
+            [ngModel]="formData().phone"
+            (ngModelChange)="updateFormField('phone', $event)"
+            name="phone"
+            placeholder="Nhập số điện thoại"
+          />
+        </div>
+
+        <div class="form-group">
+          <label>Vai trò</label>
+          <select
+            [ngModel]="formData().role"
+            (ngModelChange)="updateFormField('role', $event)"
+            name="role"
+          >
+            <option value="USER">USER</option>
+            <option value="ADMIN">ADMIN</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="save-btn">
+          {{ isEditMode() ? 'Cập nhật' : 'Thêm mới' }}
+        </button>
+
+        <button type="button" class="cancel-btn" (click)="cancelForm()">
+          Hủy
+        </button>
+      </div>
+    </form>
+  </div>
 
   <div class="table-card">
     <table>
@@ -75,7 +135,11 @@
             </select>
           </td>
 
-          <td>
+          <td class="actions">
+            <button type="button" class="edit-btn" (click)="openEditForm(user)">
+              Sửa
+            </button>
+
             <button type="button" class="delete-btn" (click)="deleteUser(user)">
               Xóa
             </button>
@@ -84,7 +148,7 @@
 
         <tr *ngIf="!isLoading() && users().length === 0">
           <td colspan="7" class="empty">
-            Không tìm thấy người dùng nào
+            Chưa có người dùng nào
           </td>
         </tr>
       </tbody>

@@ -1,8 +1,8 @@
 <section class="hero">
   <div class="hero-content">
 
-    <div class="top-user" *ngIf="user">
-      <span>Xin chào, <b>{{ user.fullName }}</b></span>
+    <div class="top-user" *ngIf="user()">
+      <span>Xin chào, <b>{{ user()?.fullName }}</b></span>
       
     </div>
 
@@ -18,8 +18,8 @@
       Hệ thống hỗ trợ người dùng xem sân, đặt lịch chơi và giúp admin quản lý sân, lịch đặt một cách đơn giản.
     </p>
 
-    <p class="welcome" *ngIf="user">
-      Bạn đang đăng nhập bằng tài khoản: <b>{{ user.email }}</b>
+    <p class="welcome" *ngIf="user()">
+      Bạn đang đăng nhập bằng tài khoản: <b>{{ user()?.email }}</b>
     </p>
 
     <div class="actions">
@@ -33,7 +33,6 @@
     </div>
   </div>
 </section>
-
 <section class="features">
   <div class="feature-card">
     <h3>Xem sân</h3>
@@ -48,5 +47,85 @@
   <div class="feature-card">
     <h3>Quản lý</h3>
     <p>Admin có thể quản lý sân và lịch đặt của khách hàng.</p>
+  </div>
+</section>
+
+
+<section class="featured-courts">
+  <div class="section-title">
+    <div>
+      <p>Sân đề xuất</p>
+      <h2>Sân nổi bật</h2>
+    </div>
+
+    <a routerLink="/courts">Xem tất cả</a>
+  </div>
+
+  <p class="loading-text" *ngIf="loadingCourts()">
+    Đang tải danh sách sân...
+  </p>
+
+  <div class="court-grid" *ngIf="!loadingCourts() && featuredCourts().length > 0">
+    <div class="court-card" *ngFor="let court of featuredCourts()">
+      <img [src]="court.imageUrl" [alt]="court.name" />
+
+      <div class="court-content">
+        <h3>{{ court.name }}</h3>
+        <p>{{ court.location }}</p>
+
+        <strong>
+          {{ court.pricePerHour | currency: 'VND' : 'symbol' : '1.0-0' }} / giờ
+        </strong>
+
+        <div class="court-actions">
+          <a [routerLink]="['/courts', court.id]" class="btn detail">
+            Xem chi tiết
+          </a>
+
+          <a [routerLink]="['/booking', court.id]" class="btn book">
+            Đặt ngay
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="steps">
+  <h2>Đặt sân chỉ với 3 bước</h2>
+
+  <div class="step-list">
+    <div class="step">
+      <span>1</span>
+      <h3>Chọn sân</h3>
+      <p>Tìm sân phù hợp theo địa điểm và giá.</p>
+    </div>
+
+    <div class="step">
+      <span>2</span>
+      <h3>Chọn thời gian</h3>
+      <p>Chọn ngày và khung giờ muốn chơi.</p>
+    </div>
+
+    <div class="step">
+      <span>3</span>
+      <h3>Xác nhận</h3>
+      <p>Gửi yêu cầu đặt sân và chờ xác nhận.</p>
+    </div>
+  </div>
+</section>
+
+<section class="stats">
+  <div>
+    <strong>10+</strong>
+    <span>Sân đang hoạt động</span>
+  </div>
+  <div>
+    <strong>50+</strong>
+    <span>Lượt đặt sân</span>
+  </div>
+  <div>
+    <strong>4.8/5</strong>
+    <span>Đánh giá người dùng</span>
   </div>
 </section>

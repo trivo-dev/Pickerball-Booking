@@ -28,8 +28,13 @@
       <p class="price">{{ court.pricePerHour | currency: 'VND' : 'symbol' : '1.0-0' }}/ giờ</p>
 
       <div class="actions">
-        <a [routerLink]="['/courts', court.id]" class="detail-btn"> Xem chi tiết </a>
-        <a [routerLink]="['/booking', court.id]" class="book-btn"> Đặt sân ngay </a>
+        <a [routerLink]="['/courts', court.id]" class="btn detail">
+          Xem chi tiết
+        </a>
+
+        <button type="button" class="btn booking" (click)="bookCourt(court.id)">
+          Đặt sân ngay
+        </button>
       </div>
     </div>
   </div>

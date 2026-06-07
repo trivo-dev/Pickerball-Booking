@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { ChangePasswordRequest } from '../models/change-password-request.model';
 
 import { User } from '../models/user.model';
 
@@ -29,6 +30,11 @@ export class UserService {
 
   deleteUser(id: number): Observable<string> {
     return this.http.delete(`${this.apiUrl}/${id}`, {
+      responseType: 'text'
+    });
+  }
+  changePassword(userId: number, data: ChangePasswordRequest): Observable<string> {
+    return this.http.put(`${this.apiUrl}/${userId}/change-password`, data, {
       responseType: 'text'
     });
   }

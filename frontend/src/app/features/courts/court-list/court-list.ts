@@ -1,6 +1,6 @@
 import { Component, inject, OnInit, signal, computed } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 
 import { Court } from '../../../core/models/court.model';
 import { CourtService } from '../../../core/services/court.service';
@@ -14,6 +14,7 @@ import { CourtService } from '../../../core/services/court.service';
 })
 export class CourtList implements OnInit {
 
+  private router = inject(Router);
   private courtService = inject(CourtService);
 
   courts = signal<Court[]>([]);
@@ -62,6 +63,10 @@ export class CourtList implements OnInit {
     this.priceInput.set(null);
     this.appliedSearch.set('');
     this.appliedPrice.set(null);
+  }
+
+  goToCourtDetail(courtId: number) {
+    this.router.navigate(['/courts', courtId]);
   }
 
   ngOnInit() {

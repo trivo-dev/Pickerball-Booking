@@ -1,8 +1,11 @@
 package com.pickleball.backend.controller;
 
 import com.pickleball.backend.dto.AuthResponse;
+import com.pickleball.backend.dto.ForgotPasswordRequest;
 import com.pickleball.backend.dto.LoginRequest;
 import com.pickleball.backend.dto.RegisterRequest;
+import com.pickleball.backend.dto.ResetPasswordRequest;
+import com.pickleball.backend.dto.VerifyResetPinRequest;
 import com.pickleball.backend.service.AuthService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,4 +44,36 @@ public class AuthController {
 public ResponseEntity<?> test() {
     return ResponseEntity.ok("AuthController đang chạy");
 }
+
+ @PostMapping("/forgot-password")
+    public ResponseEntity<?> forgotPassword(@RequestBody ForgotPasswordRequest request) {
+        try {
+            authService.forgotPassword(request);
+            return ResponseEntity.ok("Mã PIN đã được gửi qua email");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordRequest request) {
+        try {
+            authService.resetPassword(request);
+            return ResponseEntity.ok("Đổi mật khẩu thành công");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/verify-reset-pin")
+    public ResponseEntity<?> verifyResetPin(@RequestBody VerifyResetPinRequest request) {
+        try {
+            authService.verifyResetPin(request);
+            return ResponseEntity.ok("Mã PIN hợp lệ");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+
 }

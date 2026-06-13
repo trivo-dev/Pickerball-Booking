@@ -13,9 +13,9 @@
     </a>
 
     <!-- Admin luôn hiện, dù là USER vẫn thấy -->
-    <a routerLink="/admin">
-  Admin
-</a>
+    <a routerLink="/admin/dashboard">
+      Admin
+    </a>
 
     <!-- Menu tài khoản -->
     <div class="user-menu">
@@ -37,6 +37,9 @@
           <span>Xin chào</span>
           <b>{{ user.fullName }}</b>
         </div>
+         <a routerLink="/change-password" (click)="closeUserMenu()">
+    Đổi mật khẩu
+  </a>
 
         <button type="button" class="dropdown-btn" (click)="logout()">
           Đăng xuất

@@ -7,18 +7,19 @@
   <div class="content">
 
     <div class="header">
-
       <h1>{{ court.name }}</h1>
 
-      <span class="status" [class.available]="court.status === 'AVAILABLE'"
-        [class.maintenance]="court.status === 'MAINTENANCE'">
+      <span
+        class="status"
+        [class.available]="court.status === 'AVAILABLE'"
+        [class.maintenance]="court.status === 'MAINTENANCE'"
+      >
         {{
-        court.status === 'AVAILABLE'
-        ? 'Đang hoạt động'
-        : 'Bảo trì'
+          court.status === 'AVAILABLE'
+            ? 'Đang hoạt động'
+            : 'Bảo trì'
         }}
       </span>
-
     </div>
 
     <p class="location">
@@ -32,15 +33,20 @@
 
     <div class="description">
       <h3>Mô tả sân</h3>
-
-      <p>
-        {{ court.description }}
-      </p>
+      <p>{{ court.description }}</p>
     </div>
+
     <div class="actions">
-      <a class="book-btn" [routerLink]="['/booking', court.id]" [class.disabled]="court.status === 'MAINTENANCE'">
+      <button
+        type="button"
+        class="book-btn"
+        [class.disabled]="court.status === 'MAINTENANCE'"
+        [disabled]="court.status === 'MAINTENANCE'"
+        (click)="bookCourt(court.id)"
+      >
         Đặt sân ngay
-      </a>
+      </button>
+
       <a class="back-btn" routerLink="/courts">
         Quay về
       </a>

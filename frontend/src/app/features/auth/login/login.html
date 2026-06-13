@@ -3,6 +3,10 @@
     <a routerLink="/">Pickleball Booking</a>
   </div>
 </header>
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/develop
 <div class="auth-container">
   <div class="auth-card">
     <h2>Đăng nhập</h2>
@@ -15,17 +19,16 @@
 
       <div class="form-group">
         <label>Mật khẩu</label>
-        <input
-          type="password"
-          name="password"
-          [(ngModel)]="loginData.password"
-          placeholder="Nhập mật khẩu"
-        />
+        <input type="password" name="password" [(ngModel)]="loginData.password" placeholder="Nhập mật khẩu" />
       </div>
 
-      <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
-      <p class="success" *ngIf="successMessage">{{ successMessage }}</p>
+      <p class="error" *ngIf="errorMessage()">
+        {{ errorMessage() }}
+      </p>
 
+      <p class="success" *ngIf="successMessage()">
+        {{ successMessage() }}
+      </p>
       <button type="submit">Đăng nhập</button>
 
       <p class="switch-page">

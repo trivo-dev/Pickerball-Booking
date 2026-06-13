@@ -1,37 +1,46 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
-import { map, switchMap } from 'rxjs/operators';
-import { toSignal } from '@angular/core/rxjs-interop';
-
+import { Court } from '../../../core/models/court.model';
 import { CourtService } from '../../../core/services/court.service';
+import { AuthService } from '../../../core/services/auth';
 
 @Component({
   selector: 'app-court-detail',
   standalone: true,
-  imports: [CommonModule, CurrencyPipe, RouterLink],
+  imports: [CommonModule, RouterLink, CurrencyPipe],
   templateUrl: './court-detail.html',
-  styleUrls: ['./court-detail.scss']
+  styleUrl: './court-detail.scss'
 })
-export class CourtDetail {
+export class CourtDetail implements OnInit {
 
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
   private courtService = inject(CourtService);
+  private authService = inject(AuthService);
 
-  court = toSignal(
-    this.route.paramMap.pipe(
+  court = signal<Court | null>(null);
 
-      map(params => Number(params.get('id'))),
+  ngOnInit(): void {
+    const id = Number(this.route.snapshot.paramMap.get('id'));
 
-      switchMap(id =>
-        this.courtService.getCourtById(id)
-      )
+    this.courtService.getCourtById(id).subscribe({
+      next: (data) => {
+        this.court.set(data);
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    });
+  }
 
-    ),
-    {
-      initialValue: null
+  bookCourt(courtId: number): void {
+    if (!this.authService.isLoggedIn()) {
+      this.router.navigate(['/login']);
+      return;
     }
-  );
 
+    this.router.navigate(['/booking', courtId]);
+  }
 }

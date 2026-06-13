@@ -1,12 +1,11 @@
 package com.pickleball.backend.controller;
 
-import com.pickleball.backend.dto.CreateUserRequest;
-import com.pickleball.backend.dto.UpdateUserRequest;
 import com.pickleball.backend.dto.UpdateUserRoleRequest;
 import com.pickleball.backend.dto.UserResponse;
 import com.pickleball.backend.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.pickleball.backend.dto.ChangePasswordRequest;
 
 import java.util.List;
 
@@ -22,38 +21,15 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<UserResponse>> getAllUsers() {
-        return ResponseEntity.ok(userService.getAllUsers());
-    }
-
-    @PostMapping
-    public ResponseEntity<?> createUser(@RequestBody CreateUserRequest request) {
-        try {
-            UserResponse response = userService.createUser(request);
-            return ResponseEntity.ok(response);
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateUser(
-            @PathVariable Long id,
-            @RequestBody UpdateUserRequest request
-    ) {
-        try {
-            UserResponse response = userService.updateUser(id, request);
-            return ResponseEntity.ok(response);
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    public ResponseEntity<List<UserResponse>> getUsers(
+            @RequestParam(required = false) String keyword) {
+        return ResponseEntity.ok(userService.searchUsers(keyword));
     }
 
     @PutMapping("/{id}/role")
     public ResponseEntity<?> updateUserRole(
             @PathVariable Long id,
-            @RequestBody UpdateUserRoleRequest request
-    ) {
+            @RequestBody UpdateUserRoleRequest request) {
         try {
             UserResponse response = userService.updateUserRole(id, request);
             return ResponseEntity.ok(response);
@@ -67,6 +43,18 @@ public class UserController {
         try {
             userService.deleteUser(id);
             return ResponseEntity.ok("Xóa người dùng thành công");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/{id}/change-password")
+    public ResponseEntity<?> changePassword(
+            @PathVariable Long id,
+            @RequestBody ChangePasswordRequest request) {
+        try {
+            userService.changePassword(id, request);
+            return ResponseEntity.ok("Đổi mật khẩu thành công");
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

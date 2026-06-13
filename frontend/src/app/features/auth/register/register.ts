@@ -52,10 +52,6 @@ export class Register {
       return;
     }
 
-<<<<<<< HEAD
-=======
-    
->>>>>>> origin/develop
     if (password !== this.confirmPassword.trim()) {
       this.errorMessage = 'Mật khẩu xác nhận không khớp';
       return;
@@ -65,11 +61,7 @@ export class Register {
       fullName,
       email,
       password,
-<<<<<<< HEAD
       phone,
-=======
-      phone
->>>>>>> origin/develop
     };
 
     this.authService.register(this.registerData).subscribe({

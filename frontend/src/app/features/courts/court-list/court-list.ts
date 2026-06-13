@@ -1,10 +1,9 @@
 import { Component, inject, OnInit, signal, computed } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 
 import { Court } from '../../../core/models/court.model';
 import { CourtService } from '../../../core/services/court.service';
-import { AuthService } from '../../../core/services/auth';
 
 @Component({
   selector: 'app-court-list',
@@ -15,17 +14,14 @@ import { AuthService } from '../../../core/services/auth';
 })
 export class CourtList implements OnInit {
 
-  private courtService = inject(CourtService);
-  private authService = inject(AuthService);
   private router = inject(Router);
+  private courtService = inject(CourtService);
 
   courts = signal<Court[]>([]);
   loading = signal(true);
   error = signal<string | null>(null);
-
   searchInput = signal('');
   priceInput = signal<number | null>(null);
-
   appliedSearch = signal('');
   appliedPrice = signal<number | null>(null);
 
@@ -47,11 +43,37 @@ export class CourtList implements OnInit {
     });
   });
 
-  ngOnInit(): void {
+  onSearchTextChange(event: Event) {
+    const value = (event.target as HTMLInputElement).value;
+    this.searchInput.set(value);
+  }
+
+  onPriceChange(event: Event) {
+    const value = (event.target as HTMLInputElement).value;
+    this.priceInput.set(value ? Number(value) : null);
+  }
+
+  searchCourts() {
+    this.appliedSearch.set(this.searchInput());
+    this.appliedPrice.set(this.priceInput());
+  }
+
+  clearSearch() {
+    this.searchInput.set('');
+    this.priceInput.set(null);
+    this.appliedSearch.set('');
+    this.appliedPrice.set(null);
+  }
+
+  goToCourtDetail(courtId: number) {
+    this.router.navigate(['/courts', courtId]);
+  }
+
+  ngOnInit() {
     this.loadCourts();
   }
 
-  loadCourts(): void {
+  loadCourts() {
     this.loading.set(true);
     this.error.set(null);
 
@@ -66,36 +88,5 @@ export class CourtList implements OnInit {
         this.loading.set(false);
       }
     });
-  }
-
-  onSearchTextChange(event: Event): void {
-    const value = (event.target as HTMLInputElement).value;
-    this.searchInput.set(value);
-  }
-
-  onPriceChange(event: Event): void {
-    const value = (event.target as HTMLInputElement).value;
-    this.priceInput.set(value ? Number(value) : null);
-  }
-
-  searchCourts(): void {
-    this.appliedSearch.set(this.searchInput());
-    this.appliedPrice.set(this.priceInput());
-  }
-
-  clearSearch(): void {
-    this.searchInput.set('');
-    this.priceInput.set(null);
-    this.appliedSearch.set('');
-    this.appliedPrice.set(null);
-  }
-
-  bookCourt(courtId: number): void {
-    if (!this.authService.isLoggedIn()) {
-      this.router.navigate(['/login']);
-      return;
-    }
-
-    this.router.navigate(['/booking', courtId]);
   }
 }

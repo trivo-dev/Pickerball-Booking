@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -20,8 +20,8 @@ export class Login {
     password: ''
   };
 
-  errorMessage = signal('');
-  successMessage = signal('');
+  errorMessage = '';
+  successMessage = '';
 
   constructor(
     private authService: AuthService,
@@ -29,23 +29,23 @@ export class Login {
   ) {}
 
   onLogin(): void {
-    this.errorMessage.set('');
-    this.successMessage.set('');
+    this.errorMessage = '';
+    this.successMessage = '';
 
     if (!this.loginData.email.trim()) {
-      this.errorMessage.set('Vui lòng nhập email');
+      this.errorMessage = 'Vui lòng nhập email';
       return;
     }
 
     if (!this.loginData.password.trim()) {
-      this.errorMessage.set('Vui lòng nhập mật khẩu');
+      this.errorMessage = 'Vui lòng nhập mật khẩu';
       return;
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!emailRegex.test(this.loginData.email)) {
-      this.errorMessage.set('Email không đúng định dạng');
+      this.errorMessage = 'Email không đúng định dạng';
       return;
     }
 
@@ -53,15 +53,16 @@ export class Login {
       next: (res) => {
         this.authService.saveUser(res);
 
-        this.successMessage.set(res.message ?? 'Đăng nhập thành công');
+        this.successMessage = res.message ?? 'Đăng nhập thành công';
 
+        // Dù USER hay ADMIN đều về trang chủ
         this.router.navigate(['/home']);
       },
       error: (err) => {
         if (typeof err.error === 'string') {
-          this.errorMessage.set(err.error);
+          this.errorMessage = err.error;
         } else {
-          this.errorMessage.set('Email hoặc mật khẩu không đúng');
+          this.errorMessage = 'Email hoặc mật khẩu không đúng';
         }
       }
     });

@@ -17,7 +17,7 @@
 </p>
 
 <div class="court-list">
-  <div class="court-card" *ngFor="let court of filteredCourts()">
+  <div class="court-card" *ngFor="let court of filteredCourts()" (click)="goToCourtDetail(court.id)">
     <img [src]="court.imageUrl" [alt]="court.name" />
 
     <div class="content">
@@ -28,13 +28,11 @@
       <p class="price">{{ court.pricePerHour | currency: 'VND' : 'symbol' : '1.0-0' }}/ giờ</p>
 
       <div class="actions">
-        <a [routerLink]="['/courts', court.id]" class="btn detail">
-          Xem chi tiết
-        </a>
-
-        <button type="button" class="btn booking" (click)="bookCourt(court.id)">
+        <a [routerLink]="['/courts', court.id]" class="detail-btn" (click)="$event.stopPropagation()"> 
+          Xem chi tiết </a>
+        <a [routerLink]="['/booking', court.id]" class="book-btn" (click)="$event.stopPropagation()">
           Đặt sân ngay
-        </button>
+        </a>
       </div>
     </div>
   </div>

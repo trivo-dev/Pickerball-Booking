@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
@@ -11,22 +11,29 @@ import { LoginRequest } from '../../../core/models/login-request.model';
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './login.html',
-  styleUrl: './login.scss'
+  styleUrl: './login.scss',
 })
 export class Login {
-
   loginData: LoginRequest = {
     email: '',
-    password: ''
+    password: '',
   };
 
   errorMessage = '';
   successMessage = '';
 
+  private returnUrl = '/';
+
   constructor(
     private authService: AuthService,
-    private router: Router
-  ) {}
+    private router: Router,
+    private route: ActivatedRoute,
+  ) {
+    const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
+    if (returnUrl) {
+      this.returnUrl = returnUrl;
+    }
+  }
 
   onLogin(): void {
     this.errorMessage = '';
@@ -55,8 +62,7 @@ export class Login {
 
         this.successMessage = res.message ?? 'Đăng nhập thành công';
 
-        // Dù USER hay ADMIN đều về trang chủ
-        this.router.navigate(['/home']);
+        this.router.navigate([this.returnUrl]);
       },
       error: (err) => {
         if (typeof err.error === 'string') {
@@ -64,7 +70,7 @@ export class Login {
         } else {
           this.errorMessage = 'Email hoặc mật khẩu không đúng';
         }
-      }
+      },
     });
   }
 }

@@ -72,6 +72,13 @@ export class BookingForm {
   }
 
   submitBooking(): void {
+    if (!this.authService.isLoggedIn()) {
+      this.router.navigate(['/login'], {
+        queryParams: { returnUrl: this.router.url },
+      });
+      return;
+    }
+
     const court = this.court();
     if (!court) {
       return;
@@ -123,7 +130,9 @@ export class BookingForm {
 
     this.bookingService.addBooking(booking).subscribe({
       next: () => {
-        this.router.navigate(['/my-bookings']);
+        this.router.navigate(['/my-bookings'], {
+          queryParams: { success: 'true' },
+        });
       },
       error: () => {
         this.message = 'Lưu đặt sân thất bại. Vui lòng thử lại.';

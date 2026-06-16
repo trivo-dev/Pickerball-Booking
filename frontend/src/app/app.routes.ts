@@ -13,6 +13,7 @@ import { Login } from './features/auth/login/login';
 import { Register } from './features/auth/register/register';
 import { Unauthorized } from './features/unauthorized/unauthorized';
 import { adminGuard } from './core/guards/admin.guard';
+import { authGuard } from './core/guards/auth.guard';
 import { UserManagement } from './features/admin/user-management/user-management';
 import { AdminLayout } from './layouts/admin-layout/admin-layout';
 import { ForgotPassword } from './features/auth/forgot-password/forgot-password';
@@ -25,8 +26,8 @@ export const routes: Routes = [
       { path: '', component: Home },
       { path: 'courts', component: CourtList },
       { path: 'courts/:id', component: CourtDetail },
-      { path: 'booking/:courtId', component: BookingForm },
-      { path: 'my-bookings', component: MyBookings },
+      { path: 'booking/:courtId', component: BookingForm, canActivate: [authGuard] },
+      { path: 'my-bookings', component: MyBookings, canActivate: [authGuard] },
 
       {
         path: 'admin',
@@ -37,15 +38,14 @@ export const routes: Routes = [
           { path: 'dashboard', component: Dashboard },
           { path: 'courts', component: CourtManagement },
           { path: 'bookings', component: BookingManagement },
-          { path: 'users', component: UserManagement }
-        ]
+          { path: 'users', component: UserManagement },
+        ],
       },
-
-    ]
+    ],
   },
   { path: 'login', component: Login },
   { path: 'register', component: Register },
   { path: 'forgot-password', component: ForgotPassword },
   { path: 'unauthorized', component: Unauthorized },
-  { path: '**', redirectTo: '' }
+  { path: '**', redirectTo: '' },
 ];
